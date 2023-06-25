@@ -1,4 +1,4 @@
-# Google Sheets Plugin
+# Google Sheets Plugin (In Development)
 ### Developed for Elgato Streamdeck
 
 
