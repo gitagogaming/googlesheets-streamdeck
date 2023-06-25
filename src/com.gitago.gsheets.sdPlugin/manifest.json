@@ -1,0 +1,54 @@
+{
+	"SDKVersion": 2,
+	"Author": "Gitago",
+	"CodePath": "app.html",
+	"Description": "Modify a Google Sheet from your Stream Deck",
+	"Name": "Google Sheets",
+	"Icon": "actions/template/assets/action",
+	"URL": "https://www.elgato.com/en/gaming/stream-deck",
+	"Version": "1.0.2",
+	"Software": {
+		"MinimumVersion": "5.0"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "10.11"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Category": "Google Sheets",
+	"CategoryIcon": "actions/template/assets/actionimage",
+	"Actions": [
+		{
+			"Icon": "actions/template/assets/actionimage",
+			"Name": "Set Cell Value",
+			"Controllers": ["Keypad"],
+			"States": [
+				{
+					"Image": "actions/template/assets/action"
+				}
+			],
+			"Tooltip": "Set a Cell's Value on a Google Sheet",
+			"UUID": "com.gitago.gsheets.setcellvalue",
+			"PropertyInspectorPath": "actions/template/property-inspector/setcellvalue.html"
+		},
+
+		{
+			"Icon": "actions/template/assets/actionimage",
+			"Name": "Get Cell Value",
+			"Controllers": ["Keypad"],
+			"States": [
+				{
+					"Image": "actions/template/assets/action"
+				}
+			],
+			"Tooltip": "Get a Cell's Value in a Google Sheet",
+			"UUID": "com.gitago.gsheets.getcellvalue",
+			"PropertyInspectorPath": "actions/template/property-inspector/getcellvalue.html"
+		}
+	]
+}

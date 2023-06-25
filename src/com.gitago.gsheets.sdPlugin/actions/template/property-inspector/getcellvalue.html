@@ -1,0 +1,246 @@
+<!-- This is the HTML for the Property Inspector. 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>com.elgato.template Property Inspector</title>
+    <link rel="stylesheet" href="../../../libs/css/sdpi.css" />
+</head>
+
+<body>
+    <div class="sdpi-wrapper">
+        <div type="tabs" class="sdpi-item">
+            <div class="sdpi-item-label empty"></div>
+            <div class="tabs">
+                <div class="tab selected" data-target="#tab1" title="Show some inputs">Inputs</div>
+                <div class="tab" data-target="#tab2" title="Here's some text-areas">Text</div>
+            </div>
+        </div>
+        <hr class="tab-separator">
+        <form id="property-inspector">
+            <div id="tab1" class="tab-container">
+                <div class="sdpi-item">
+                    <div data-localize class="sdpi-item-label" title="My name">Name</div>
+                    <input data-localize class="sdpi-item-value" name="name" type="text" value="" placeholder="Click Me" />
+                </div>
+
+                <div type="textarea" class="sdpi-item">
+                    <div class="sdpi-item-label" data-localize title="My message">Message</div>
+                    <div class="sdpi-item-value textarea">
+                        <textarea
+                                  name="message"
+                                  type="textarea"
+                                  maxlength="50"
+                                  class="three-lines"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div id="tab2" class="tab-container">
+                <div class="sdpi-item">
+                    <div data-localize class="sdpi-item-label" title="More">More</div>
+                    <input data-localize class="sdpi-item-value" name="more" type="text" value="" placeholder="More info" />
+                </div>
+            </div>
+        </form>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label" data-localize title="My button">Button</div>
+            <button
+                    class="sdpi-item-value"
+                    value="Click Me"
+                    data-localize
+                    id="open-external">
+                Click Me
+            </button>
+        </div>
+    </div>
+
+    <div class="sdpi-info-label hidden" style="top: -1000" value=""></div>
+
+
+    <script src="../../../libs/js/constants.js"></script>
+    <script src="../../../libs/js/prototypes.js"></script>
+    <script src="../../../libs/js/timers.js"></script>
+    <script src="../../../libs/js/utils.js"></script>
+    <script src="../../../libs/js/events.js"></script>
+    <script src="../../../libs/js/api.js"></script>
+    <script src="../../../libs/js/property-inspector.js"></script>
+    <script src="../../../libs/js/dynamic-styles.js"></script>
+
+
+    <script src="inspector.js"></script>
+</body>
+
+</html>
+
+
+--> 
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>Get cell Value</title>
+    <link rel="stylesheet" href="../../../libs/css/sdpi.css" />
+</head>
+
+<body>
+<div class="sdpi-wrapper">
+    
+    <div class="sdpi-item">
+ 
+        <p>Get the value from a cell in Google Sheets</p>
+            
+    </div>
+
+    <div class="sdpi-item">
+        <div class="sdpi-item-label">Sheet ID</div>
+        <input class="sdpi-item-value" id="SheetID" value="" placeholder="Sheet ID"
+               onchange="onchange_SheetID()" pattern="\S*">
+        <label for="cellValue"></label>
+    </div>
+
+    <div class="sdpi-item">
+        <div class="sdpi-item-label">Sheet Name</div>
+        <input class="sdpi-item-value" id="SheetName" value="" placeholder="Sheet Name"
+               onchange="onchange_SheetName()">
+        <label for="SheetName"></label>
+    </div>
+
+
+    <div class="sdpi-item">
+        <div class="sdpi-item-label">A1 Notation</div>
+        <input class="sdpi-item-value" id="A1Notation" value="" placeholder="A1 Notation"
+               onchange="onchange_A1Notation()" pattern="\S*">
+        <label for="cellValue"></label>
+    </div>
+
+
+    <div class="sdpi-item">
+        <div class="sdpi-item-label">Cell Value</div>
+        <input class="sdpi-item-value" id="cellValue" value="" placeholder="Cell Value"
+               onchange="onchange_category()">
+        <label for="cellValue"></label>
+    </div>
+
+    
+</div>
+
+
+<script src="../../../libs/js/constants.js"></script>
+<script src="../../../libs/js/prototypes.js"></script>
+<script src="../../../libs/js/timers.js"></script>
+<script src="../../../libs/js/utils.js"></script>
+<script src="../../../libs/js/events.js"></script>
+<script src="../../../libs/js/api.js"></script>
+<script src="../../../libs/js/property-inspector.js"></script>
+<script src="../../../libs/js/dynamic-styles.js"></script>
+
+
+
+
+<script>
+let settings
+const category_el = document.getElementById("cellValue")
+const SheetID_el = document.getElementById("SheetID")
+const A1Notation_el = document.getElementById("A1Notation")
+const SheetName_el = document.getElementById("SheetName")
+
+$PI.onConnected(jsn => {
+    console.log('Property Inspector connected', jsn);
+    console.log(jsn.actionInfo.payload.settings);
+
+    settings = jsn.actionInfo.payload.settings
+
+    if (settings?.SheetID) {
+        SheetID_el.value = settings.SheetID
+    } else {
+        SheetID_el.value = ""
+        settings["SheetID"] = SheetID_el.value
+    }
+
+    if (settings?.SheetName) {
+        SheetName_el.value = settings.SheetName
+    } else {
+        SheetName_el.value = ""
+        settings["SheetName"] = SheetName_el.value
+    }
+
+    if (settings?.A1Notation) {
+        A1Notation_el.value = settings.A1Notation
+    } else {
+        A1Notation_el.value = ""
+        settings["A1Notation"] = A1Notation_el.value
+    }
+    
+    if (settings?.cellValue) {
+        category_el.value = settings.cellValue
+    } else {
+        category_el.value = "kitten"
+        settings["cellValue"] = category_el.value
+    }
+
+
+    $PI.setSettings(settings);
+});
+
+
+const onchange_SheetName = () => {
+    console.log(SheetName_el.value);
+    console.log(SheetName_el.validity.valid)
+    if (SheetName_el.validity.valid && SheetName_el.value) {
+        settings["SheetName"] = SheetName_el.value
+        $PI.setSettings(settings);
+    } else {
+        SheetName_el.value = settings.SheetName
+    }
+}
+
+const onchange_SheetID = () => {
+    console.log(SheetID_el.value);
+    console.log(SheetID_el.validity.valid)
+    if (SheetID_el.validity.valid && SheetID_el.value) {
+        settings["SheetID"] = SheetID_el.value
+        $PI.setSettings(settings);
+    } else {
+        SheetID_el.value = settings.SheetID
+    }
+}
+
+const onchange_A1Notation = () => {
+    console.log(A1Notation_el.value);
+    console.log(A1Notation_el.validity.valid)
+    if (A1Notation_el.validity.valid && A1Notation_el.value) {
+        settings["A1Notation"] = A1Notation_el.value
+        $PI.setSettings(settings);
+    } else {
+        A1Notation_el.value = settings.A1Notation
+    }
+}
+
+
+const onchange_category = () => {
+        console.log(category_el.value);
+        console.log(category_el.validity.valid)
+        if (category_el.validity.valid && category_el.value) {
+            settings["cellValue"] = category_el.value
+            $PI.setSettings(settings);
+        } else {
+            category_el.value = settings.cellValue
+        }
+    }
+</script>
+</body>
+</html>
